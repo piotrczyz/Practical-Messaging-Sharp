@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Runtime.Serialization.Json;
 using System.Text;
+using System.Text.Json;
 using RabbitMQ.Client;
 
 namespace SimpleMessaging
@@ -54,7 +56,9 @@ namespace SimpleMessaging
         /// <param name="message"></param>
         public void Send(T message)
         {
-            //TODO: Serialize the message Tip, convert to UTF8
+            var serialized = _messageSerializer.Invoke(message);
+            var body = Encoding.UTF8.GetBytes(serialized);
+            
             _channel.BasicPublish(exchange: ExchangeName, routingKey: _routingKey, basicProperties: null, body: body);
         }
 

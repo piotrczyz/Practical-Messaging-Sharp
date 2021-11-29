@@ -1,6 +1,6 @@
 ﻿using System;
+using System.Text.Json;
 using Model;
-using Newtonsoft.Json;
 using SimpleMessaging;
 
 namespace Sender
@@ -9,7 +9,7 @@ namespace Sender
     {
         static void Main(string[] args)
         {
-            using (var channel = new DataTypeChannelProducer<Greeting>((greeting) => /*TODO: serialize the message*/))
+            using (var channel = new DataTypeChannelProducer<Greeting>(greeting => JsonSerializer.Serialize(greeting)))
             {
                 var greeting = new Greeting();
                 greeting.Salutation = "Hello World!";
